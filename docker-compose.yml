@@ -1,0 +1,32 @@
+
+services:
+ frontend:
+    build:
+      context: .
+      dockerfile: cdb.client/Dockerfile
+    image: cdb-client:latest
+    container_name: cdb-frontend
+    ports:
+      - "4200:4200"
+    restart: on-failure  
+
+ backend:
+    build:
+      context: .
+      dockerfile: CDB.Server/Dockerfile
+    image: cdb-server:latest
+    container_name: cdb-backend
+    ports:
+      - "5132:8080"
+      - "5133:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080;https://+:8081
+      - HTTP_PORTS=    
+      - HTTPS_PORTS=   
+    depends_on:
+      - frontend
+    restart: on-failure
+    
+  
+
