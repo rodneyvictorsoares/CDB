@@ -21,8 +21,8 @@
     </button>
 
     <div *ngIf="resultado">
-        <p>Valor Bruto: {{ resultado.valorFinalBruto | currency:'BRL':'symbol' }}</p>
-        <p>Valor Líquido: {{ resultado.valorFinalLiquido | currency:'BRL':'symbol' }}</p>
+        <p>Valor Bruto: {{ resultado.valorFinalBruto.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) }}</p>
+        <p>Valor Líquido: {{ resultado.valorFinalLiquido.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) }}</p>
     </div>
 
 </div>
