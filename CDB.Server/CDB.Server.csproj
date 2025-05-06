@@ -9,6 +9,7 @@
     <SpaRoot>..\cdb.client</SpaRoot>
     <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
     <SpaProxyServerUrl>https://localhost:4200</SpaProxyServerUrl>
+    <SonarQubeExclude>True</SonarQubeExclude>
   </PropertyGroup>
 
   <ItemGroup>

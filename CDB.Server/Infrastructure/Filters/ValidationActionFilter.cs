@@ -6,29 +6,42 @@ namespace CDB.Server.Infrastructure.Filters
 {
     public class ValidationActionFilter : IAsyncActionFilter
     {
-        public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+        public async Task OnActionExecutionAsync(
+            ActionExecutingContext context,
+            ActionExecutionDelegate next)
         {
-            foreach (var arg in context.ActionArguments)
-            {
-                var validatorType = typeof(IValidator<>).MakeGenericType(arg.Value!.GetType());
-                if (context.HttpContext.RequestServices.GetService(validatorType) is IValidator validator)
+            var validationTasks = context.ActionArguments
+                .Select(async kvp =>
                 {
-                    var validationResult = await validator.ValidateAsync(new ValidationContext<object>(arg.Value!));
-                    if (!validationResult.IsValid)
-                    {
-                        var messages = validationResult.Errors
+                    var value = kvp.Value!;
+                    var validatorType = typeof(IValidator<>)
+                        .MakeGenericType(value.GetType());
+                    if (context.HttpContext.RequestServices
+                        .GetService(validatorType) is not IValidator validator)
+                        return (string[]?)null;
+
+                    var result = await validator
+                        .ValidateAsync(new ValidationContext<object>(value));
+                    return result.IsValid
+                        ? null
+                        : result.Errors
                             .Select(e => e.ErrorMessage)
                             .ToArray();
+                })
+                .ToList();
 
-                        context.Result = new BadRequestObjectResult(new
-                        {
-                            errors = messages
-                        });
+            var results = await Task.WhenAll(validationTasks);
 
-                        return;
-                    }
-                }
+            var firstFailure = results.FirstOrDefault(r => r != null);
+            if (firstFailure != null)
+            {
+                context.Result = new BadRequestObjectResult(new
+                {
+                    errors = firstFailure
+                });
+                return;
             }
+
             await next();
         }
     }

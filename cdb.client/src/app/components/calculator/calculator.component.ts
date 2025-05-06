@@ -18,7 +18,7 @@ export class CalculatorComponent {
   loading = false;
   error = '';
 
-  constructor(private cdbService: CdbService) { }
+  constructor(private readonly cdbService: CdbService) { }
 
   errorMessages: string[] = [];
   showErrorModal = false;
@@ -42,7 +42,7 @@ export class CalculatorComponent {
         if (Array.isArray(backendErrors) && backendErrors.length) {
           this.errorMessages = backendErrors;
         } else {
-          const single = err?.error?.error || 'Erro inesperado';
+          const single = err?.error?.error ?? 'Erro inesperado';
           this.errorMessages = Array.isArray(single) ? single : [single];
         }
         this.showErrorModal = true;

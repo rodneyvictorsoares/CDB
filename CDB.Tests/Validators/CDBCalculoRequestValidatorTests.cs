@@ -5,9 +5,9 @@ using FluentValidation.Results;
 
 namespace CDB.Tests.Validators
 {
-    public class CDBCalculoRequestValidatorTests
+    public class CdbCalculoRequestValidatorTests
     {
-        private readonly CDBCalculoRequestValidator _validator = new();
+        private readonly CdbCalculoRequestValidator _validator = new();
 
         [Theory]
         [InlineData(0, 2, "ValorInicial")]
@@ -16,7 +16,7 @@ namespace CDB.Tests.Validators
         public void Validate_DeveFalharParaEntradasInvalidas(decimal valorInicial, int prazoEmMeses, string propriedadeEsperada)
         {
             // Arrange
-            var req = new CDBCalculoRequest
+            var req = new CdbCalculoRequest
             {
                 ValorInicial = valorInicial,
                 PrazoEmMeses = prazoEmMeses
@@ -31,10 +31,10 @@ namespace CDB.Tests.Validators
         }
 
         [Fact]
-        public void validate_DevePassarParaEntradaValida()
+        public void Validate_DevePassarParaEntradaValida()
         {
             //Arrage
-            var req = new CDBCalculoRequest
+            var req = new CdbCalculoRequest
             {
                 ValorInicial = 100,
                 PrazoEmMeses = 3

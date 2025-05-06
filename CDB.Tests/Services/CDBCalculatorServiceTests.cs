@@ -4,9 +4,9 @@ using FluentAssertions;
 
 namespace CDB.Tests.Services
 {
-    public class CDBCalculatorServiceTests
+    public class CdbCalculatorServiceTests
     {
-        private readonly CDBCalculatorService _calculatorService = new();
+        private readonly CdbCalculatorService _calculatorService = new();
 
         [Theory]
         [InlineData(100, 2, 101.95, 79.01)]
@@ -14,7 +14,7 @@ namespace CDB.Tests.Services
         public void Calcular_DeveRetornarValoresBrutoseLiquidosCorretos(decimal valorInicial, int prazoEmMeses, decimal brutoEsperado, decimal liquidoEsperado)
         {
             //Arrage
-            var req = new CDBCalculoRequest
+            var req = new CdbCalculoRequest
             {
                 ValorInicial = valorInicial,
                 PrazoEmMeses = prazoEmMeses

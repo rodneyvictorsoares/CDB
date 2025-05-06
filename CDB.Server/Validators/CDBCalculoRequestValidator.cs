@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace CDB.Server.Validators
 {
-    public class CDBCalculoRequestValidator : AbstractValidator<CDBCalculoRequest>
+    public class CdbCalculoRequestValidator : AbstractValidator<CdbCalculoRequest>
     {
-        public CDBCalculoRequestValidator()
+        public CdbCalculoRequestValidator()
         {
             RuleFor(x => x.ValorInicial)
                 .GreaterThan(0)

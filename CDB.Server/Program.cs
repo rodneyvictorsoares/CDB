@@ -4,55 +4,64 @@ using CDB.Server.Services;
 using CDB.Server.Validators;
 using FluentValidation;
 
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-builder.Services.AddScoped<ICDBCalculatorService, CDBCalculatorService>();
-
-builder.Services.AddCors(options =>
+namespace CDB.Server
 {
-    options.AddPolicy("AllowAll", policy =>
+    public static class Program
     {
-        policy
-            .AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader();
-    });
-});
+        private static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddValidatorsFromAssemblyContaining<CDBCalculoRequestValidator>();
+            // Add services to the container.
+            builder.Services.AddScoped<ICdbCalculatorService, CdbCalculatorService>();
 
-builder.Services.AddScoped<ValidationActionFilter>();
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", policy =>
+                {
+                    policy
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+            });
 
-builder.Services.AddControllers(opt =>
-{
-    opt.Filters.Add<ValidationActionFilter>();
-});
+            builder.Services.AddValidatorsFromAssemblyContaining<CdbCalculoRequestValidator>();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+            builder.Services.AddScoped<ValidationActionFilter>();
 
-var app = builder.Build();
+            builder.Services.AddControllers(opt =>
+            {
+                opt.Filters.Add<ValidationActionFilter>();
+            });
 
-app.UseDefaultFiles();
-app.UseStaticFiles();
+            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+            var app = builder.Build();
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
+            // Configure the HTTP request pipeline.
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
+
+            app.UseHttpsRedirection();
+
+            app.UseAuthorization();
+
+            app.UseCors("AllowAll");
+
+            app.MapControllers();
+
+            app.MapFallbackToFile("/index.html");
+
+            app.Run();
+        }
+    }
 }
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.UseCors("AllowAll");
-
-app.MapControllers();
-
-app.MapFallbackToFile("/index.html");
-
-app.Run();

@@ -2,8 +2,8 @@
 
 namespace CDB.Server.Interfaces
 {
-    public interface ICDBCalculatorService
+    public interface ICdbCalculatorService
     {
-        CDBCalculoResponse Calcular(CDBCalculoRequest request);
+        CdbCalculoResponse Calcular(CdbCalculoRequest request);
     }
 }

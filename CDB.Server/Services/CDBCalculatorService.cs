@@ -5,12 +5,12 @@ using System.Runtime.CompilerServices;
 
 namespace CDB.Server.Services
 {
-    public class CDBCalculatorService : ICDBCalculatorService
+    public class CdbCalculatorService : ICdbCalculatorService
     {
         private static readonly decimal percentualBancoCDI = 1.08M;
         private static readonly decimal CDIMensal = 0.009M;
 
-        public CDBCalculoResponse Calcular(CDBCalculoRequest request)
+        public CdbCalculoResponse Calcular(CdbCalculoRequest request)
         {
             decimal valorBruto = request.ValorInicial;
 
@@ -21,20 +21,33 @@ namespace CDB.Server.Services
 
             decimal porcentagemImposto = ObterPorcentagemImposto(request.PrazoEmMeses);
 
-            //decimal valorLiquido = valorBruto * (1 - porcentagemImposto);
             decimal valorLiquido = decimal.Round(valorBruto * (1 - porcentagemImposto), 2, MidpointRounding.ToZero);
 
-            return new CDBCalculoResponse
+            return new CdbCalculoResponse
             {
                 ValorFinalBruto = Math.Round(valorBruto, 2, MidpointRounding.ToZero),
                 ValorFinalLiquido = valorLiquido
             };
         }
 
-        private static decimal ObterPorcentagemImposto(int meses) =>
-            meses <= 6 ? 0.225M :
-            meses <= 12 ? 0.20M :
-            meses <= 24 ? 0.175M :
-                          0.15M;
+        private static decimal ObterPorcentagemImposto(int meses)
+        {
+            if (meses <= 6)
+            {
+                return 0.225M;
+            }
+            else if (meses <= 12)
+            {
+                return 0.20M;
+            }
+            else if (meses <= 24)
+            {
+                return 0.175M;
+            }
+            else
+            {
+                return 0.15M;
+            }
+        }   
     }
 }
