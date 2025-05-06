@@ -9,8 +9,8 @@ namespace CDB.Tests.Services
         private readonly CdbCalculatorService _calculatorService = new();
 
         [Theory]
-        [InlineData(100, 2, 101.95, 79.01)]
-        [InlineData(1000, 15, 1156.15, 953.82)]
+        [InlineData(100, 2, 101.95, 101.51)]
+        [InlineData(1000, 15, 1156.15, 1128.82)]
         public void Calcular_DeveRetornarValoresBrutoseLiquidosCorretos(decimal valorInicial, int prazoEmMeses, decimal brutoEsperado, decimal liquidoEsperado)
         {
             //Arrage

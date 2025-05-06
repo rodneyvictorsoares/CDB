@@ -20,8 +20,8 @@ namespace CDB.Server.Services
             }
 
             decimal porcentagemImposto = ObterPorcentagemImposto(request.PrazoEmMeses);
-
-            decimal valorLiquido = decimal.Round(valorBruto * (1 - porcentagemImposto), 2, MidpointRounding.ToZero);
+            decimal valorImposto = (valorBruto - request.ValorInicial) * porcentagemImposto;
+            decimal valorLiquido = decimal.Round(valorBruto - valorImposto, 2, MidpointRounding.ToZero);
 
             return new CdbCalculoResponse
             {
